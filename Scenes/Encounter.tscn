@@ -1,0 +1,39 @@
+[gd_scene load_steps=2 format=2]
+
+[ext_resource path="res://Art/encounter_arena_placeholder.png" type="Texture" id=1]
+
+[node name="Encounter" type="Node2D"]
+
+[node name="EncounterBG" type="Sprite" parent="."]
+scale = Vector2( 2, 2 )
+centered = false
+__meta__ = {
+"_edit_lock_": true
+}
+
+[node name="ArenaBG" type="Sprite" parent="."]
+position = Vector2( 64, 64 )
+scale = Vector2( 2, 2 )
+texture = ExtResource( 1 )
+centered = false
+__meta__ = {
+"_edit_lock_": true
+}
+
+[node name="EncounterPosZero" type="Position2D" parent="."]
+position = Vector2( 64, 64 )
+__meta__ = {
+"_edit_lock_": true
+}
+
+[node name="CharacterStartingPos" type="Position2D" parent="EncounterPosZero"]
+position = Vector2( 96, 192 )
+__meta__ = {
+"_edit_lock_": true
+}
+
+[node name="EncounterPosMax" type="Position2D" parent="EncounterPosZero"]
+position = Vector2( 192, 224 )
+__meta__ = {
+"_edit_lock_": true
+}
