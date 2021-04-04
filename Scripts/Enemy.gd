@@ -12,15 +12,13 @@ var brain = classBrain.new()
 #	Meta Parameters
 var initiative
 var speed
-var damage = 1 #placeholder parameter/ value
+var damage = 2 #placeholder parameter/ value
 #	Non-Diagetic Parameters
 var ap
 var max_action_points
-var apReplenishFactor
-var actions_dict = [
-	{"event": "attack", "cost": 4},
-	{"event": "move", "cost": 1}
-]
+var status_situation_list = [] #currently not used
+var apReplenishFactor = 2 #placeholder value
+var actions_list = ["melee_attack", "ranged_attack", "move_away", "move_towards", "move_defensively"]
 #	Pure Technical Paramenters
 var entity_spawn_id
 var turn_action_queue = []
@@ -33,33 +31,54 @@ onready var txtAnchor = get_node("TextPopUpAnchor")
 func _ready():
 	rng.randomize()
 
-	apReplenishFactor = 2
-
-	name = "Inimigo#" + String(entity_spawn_id)
-	initiative = rng.randi_range(2, 5)
-	speed = rng.randi_range(2, 5)
+	name = "Inimigo#" + String(entity_spawn_id) #placeholder value
+	initiative = rng.randi_range(2, 5) #placeholder value definition
+	speed = rng.randi_range(2, 5) #placeholder value definition
 	max_action_points = initiative + speed #min 4 - max 10
 	ap = max_action_points
 
 func run_turn():
 	# this code replenishes the AP of an entity at the beginning of the turn if this entity has lost AP
-	if not ap == max_action_points:
+	if not ap == max_action_points: #UPDATE 04/04/2021 - this will probably be an automatic action, not decided by the classBrain
 		turn_action_queue.append(["modify_AP", apReplenishFactor])
 		modify_AP(apReplenishFactor) #this needs to be realocated to an action function with its own animation
 	
-	brain.plan_turn(actions_dict, ap)
+	analyse_condition() # <- currently working on this code 04/04/2021
+	brain.define_stance()
+		#what will be analysed:
+			#hero condition parameter
+			#self condition paramenter
+				#the enemy needs to check its own condition at the beginning of the turn
+			#group condition
+				#I need to design a way for this to be checked
+	brain.decide_action(actions_list, ap)
 	take_action()
 	call_next_turn()
 
-#	UNDER DEVELOPMENT
 func _take_action():
 	for action in turn_action_queue:
+		#all actions:
+			#have a name - that is used to call the function
+			#execute an animation
+			#have a ap cost value
+			#have a type - that is used to define its weight multiplier or to permit or deny the action
 		match action:
 			"modify_AP":
 				call(action[0], action[1])
 			"consume_AP":
 				call(action[0], action[1])
-#	/////////////////
+
+func analyse_condition():
+	var possible_status_conditions = ["critical", "dangerous", "normal", "fine", "safe"]
+	var current_ap_percentage = (ap / max_action_points) * 100
+	var current_hp_percentage = (hp / max_health_points) * 100
+	#need to think about how to analyse the situation list
+	if current_ap_percentage / possible_status_condition.size():
+	#is the current ap value acceptable?					- weight 1
+	#is the current hp value acceptable?					- weight 4
+	#is the current status_situation_list value acceptable?	- weight 2
+	#
+	pass
 
 func take_action():
 	var action_cost
@@ -72,10 +91,10 @@ func take_action():
 	print(name + " took action for " + String(action_cost) + " AP")
 	print(name + " now has " + String(ap) + " action points.")
 
-func attack():
+func melee_attack():
 	#in the future maybe add the possibility to attack non-player characters
 	print(name + " attacked player")
-	for action in actions_dict:
+	for action in actions_list:
 		if action.event == "attack":
 			modify_AP(action.cost)
 	emit_signal("attackPlayer", damage)

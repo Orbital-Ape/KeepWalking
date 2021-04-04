@@ -5,10 +5,10 @@ var possible_actions = []
 func _ready():
 	pass # Replace with function body.
 
-func analyse_situation():
+func define_stance():
 	pass
 
-func plan_turn(action_list, current_ap):
+func decide_action(action_list, current_ap):
 	for action in action_list:
 		if action.cost <= current_ap:
 			possible_actions.append(action)
