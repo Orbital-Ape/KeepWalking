@@ -1,9 +1,12 @@
 extends Node
 
 var sorter = TurnOrderSorter.new()
+var list = preload("res://Scripts/groupList.gd")
 var current_round
 var turn_order
 var encounter_entity_list = []
+var times = 2 #this currently defines the quantity of enemies
+var encountered_group = [list.groups[0]]
 
 onready var preloader = get_node("ResourcePreloader")
 
@@ -27,7 +30,7 @@ func _ready():
 
 	spawn_ui()
 	initiate_encounter()
-	request_spawn_for_non_player_entities(2)
+	request_spawn_for_non_player_entities(times)
 	request_spawn_for_player()
 	rotate_to_next_round()
 

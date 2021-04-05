@@ -14,6 +14,16 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://Scripts/Classes/AIBrain.gd"
 }, {
+"base": "Node",
+"class": "ActionEvents",
+"language": "GDScript",
+"path": "res://Scripts/ActionEvents.gd"
+}, {
+"base": "Node2D",
+"class": "Entity",
+"language": "GDScript",
+"path": "res://Scripts/entity.gd"
+}, {
 "base": "",
 "class": "GitAPI",
 "language": "NativeScript",
@@ -26,6 +36,8 @@ _global_script_classes=[ {
 } ]
 _global_script_class_icons={
 "AIBrain": "",
+"ActionEvents": "",
+"Entity": "",
 "GitAPI": "",
 "Player": ""
 }

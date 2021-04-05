@@ -15,7 +15,9 @@ var speed
 var damage = 2 #placeholder parameter/ value
 #	Non-Diagetic Parameters
 var ap
+var hp
 var max_action_points
+var max_health_points
 var status_situation_list = [] #currently not used
 var apReplenishFactor = 2 #placeholder value
 var actions_list = ["melee_attack", "ranged_attack", "move_away", "move_towards", "move_defensively"]
@@ -43,7 +45,7 @@ func run_turn():
 		turn_action_queue.append(["modify_AP", apReplenishFactor])
 		modify_AP(apReplenishFactor) #this needs to be realocated to an action function with its own animation
 	
-	analyse_condition() # <- currently working on this code 04/04/2021
+	analyse_condition() #current work step
 	brain.define_stance()
 		#what will be analysed:
 			#hero condition parameter
@@ -69,16 +71,26 @@ func _take_action():
 				call(action[0], action[1])
 
 func analyse_condition():
-	var possible_status_conditions = ["critical", "dangerous", "normal", "fine", "safe"]
+	var possible_status_conditions = [{"situation": "critical", "value": 0}, {"situation": "dangerous", "value": 2}, {"situation": "fine", "value": 4 "safe"}, {"situation": "nominal", "value": ]
 	var current_ap_percentage = (ap / max_action_points) * 100
 	var current_hp_percentage = (hp / max_health_points) * 100
-	#need to think about how to analyse the situation list
-	if current_ap_percentage / possible_status_condition.size():
+	var status_group_percentage = [{"status_name": "ap", "percentage": current_ap_percentage, "situation": "normal", "weight": 1}, 
+	{"status_name": "hp", "percentage": current_hp_percentage, "situation": "normal", "weight": 4}]
+	for status in status_group_percentage:
+		if status.percentage == 100:
+			status.situation = "nominal"
+		elif status.percentage > 80:
+			status.situation = "safe"
+		elif status.percentage > 60:
+			status.situation = "fine"
+		elif status.percentage > 40:
+			status.situation = "dangerous";
+		else:
+			status.situation = "critical"
+	
+	for 		
 	#is the current ap value acceptable?					- weight 1
 	#is the current hp value acceptable?					- weight 4
-	#is the current status_situation_list value acceptable?	- weight 2
-	#
-	pass
 
 func take_action():
 	var action_cost
